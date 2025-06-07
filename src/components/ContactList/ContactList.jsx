@@ -1,12 +1,10 @@
 import Contact from "../Contact/Contact";
 import css from "./ContactList.module.css";
 
-const ContactList = ({ contacts, filteredContacts, handleDeleteContact }) => {
-  const list = filteredContacts.length > 0 ? filteredContacts : contacts;
-
+const ContactList = ({ contacts, handleDeleteContact }) => {
   return (
     <ul className={css.list}>
-      {list.map((contact) => (
+      {contacts.map((contact) => (
         <Contact
           key={contact.id}
           contact={contact}

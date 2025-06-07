@@ -20,22 +20,13 @@ function App() {
 
   const [contacts, setContacts] = useState(getInitialContacts);
   const [searchValue, setSearchValue] = useState("");
-  const [filteredContacts, setFilteredContacts] = useState([]);
 
-  useEffect(
-    () => localStorage.setItem("CONTACTS", JSON.stringify(contacts)),
-    [contacts]
-  );
-
-  const filtered = (value) => {
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(value.trim().toLowerCase())
-    );
-  };
+  useEffect(() => {
+    localStorage.setItem("CONTACTS", JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
-    setFilteredContacts(filtered(e.target.value));
   };
 
   const handleFormSubmit = (values) => {
@@ -46,14 +37,17 @@ function App() {
     setContacts((prev) => prev.filter((contact) => contact.id !== id));
   };
 
+  const visibleContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchValue.trim().toLowerCase())
+  );
+
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm handleFormSubmit={handleFormSubmit} />
       <SearchBox value={searchValue} onChange={handleSearchChange} />
       <ContactList
-        contacts={contacts}
-        filteredContacts={filteredContacts}
+        contacts={visibleContacts}
         handleDeleteContact={handleDeleteContact}
       />
     </div>
